@@ -1,63 +1,41 @@
-class BinaryTreeNode:
-    def __init__(self, data):
-        self.data = data
-        self.left_child = None
-        self.right_child = None 
+from typing import List
 
+def merge_sort(data):
+    if len(data)>1:
+        mid = len(data)//2
+        lefthalf = data[:mid]
+        righthalf = data[mid:]
 
-def insert(root, new_value) -> BinaryTreeNode:
-    
-    if not root:
-        root = BinaryTreeNode(new_value)
-        return root
-    if new_value < root.data:
-         if root.left_child:
-            insert(root.left_child, new_value)
-         else:
-            root.left_child = BinaryTreeNode(new_value)
-    else:
-        if root.right_child:
-            insert(root.right_child, new_value)
-        else:
-            root.right_child = BinaryTreeNode(new_value)
+        merge_sort(lefthalf)
+        merge_sort(righthalf)
+        i=j=k=0       
+        while i < len(lefthalf) and j < len(righthalf):
+            if lefthalf[i] < righthalf[j]:
+                data[k]=lefthalf[i]
+                i=i+1
+            else:
+                data[k]=righthalf[j]
+                j=j+1
+            k=k+1
 
+        while i < len(lefthalf):
+            data[k]=lefthalf[i]
+            i=i+1
+            k=k+1
 
-def inorder(root) -> None:
-    if root is None:
-        return
-    inorder(root.left_child)
-    print(root.data, end = " ")
-    inorder(root.right_child) 
-
-
-def preorder(root) -> None:
-    if root is None:
-        return
-    print(root.data, end = " ")
-    preorder(root.left_child)
-    preorder(root.right_child)
-
- 
-def postorder(root) -> None:
-    if root is None:
-        return 
-    postorder(root.left_child)
-    postorder(root.right_child)
-    print(root.data, end = " ")
+        while j < len(righthalf):
+            data[k]=righthalf[j]
+            j=j+1
+            k=k+1
 
 
 # Do not change the following code
 input_data = input()
-flag = True
-root = None
+data = []
 for item in input_data.split(', '):
-    if flag is True:
-        root = insert(None, int(item))
-        flag = False
-    else:
-        insert(root, int(item))
-inorder(root) 
-print()
-preorder(root)
-print()
-postorder(root)
+  if item.isnumeric():
+    data.append(int(item))
+  elif item.lstrip("-").isnumeric():
+    data.append(int(item))
+merge_sort(data)
+print(data)
